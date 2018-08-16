@@ -1,0 +1,77 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form id="studentInfosForm">
+            <div class="form-horizontal">
+
+                <input type="hidden" id="id" name="id" value="${studentInfos.id}">
+                <input type="hidden" id="hideLevel" name="hideLevel" value="${studentInfos.level}">
+                <input type="hidden" id="hideStatus" name="hideStatus" value="${studentInfos.status}">
+
+                <div class="row">
+                    <div class="col-sm-7" >
+                        <!--第一列-->
+                        <div class="col-sm-6 b-r">
+                            <#input id="name" name="姓名" underline="true" value="${studentInfos.name}"/>
+
+                            <#input id="phone" name="电话号码" underline="true" value="${studentInfos.phone}"
+                            readonly="readonly"/>
+
+                            <#input id="type" name="咨询层次" underline="true" value="${studentInfos.type}"/>
+
+                            <#input id="remark" name="备注" underline="true" value="${studentInfos.remark}"/>
+
+
+                            <#TimeCon id="nextVisitDate" name="nextVisitDate" underline="true" isTime="false"
+                            pattern="YYYY-MM-DD" inputName="下次回访时间" value="${studentInfos.nextVisitDate}"/>
+
+                        </div>
+
+                        <!--第二列-->
+                        <div class="col-sm-6 b-r">
+
+                            <#select id="sex" name="性别" underline="true" value="${studentInfos.sex}"/>
+
+                            <#select id="level" name="优质级别" underline="true" value="${studentInfos.level}"/>
+
+                            <#select id="status" name="是否报名" underline="true" value="${studentInfos.status}"/>
+
+                            <#input id="createTime" name="创建时间" underline="true" value="${studentInfos.createTime}"
+                            disabled="disabled"/>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">回访结果</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control" id="description" name="description" style="height:100px;resize:none" ></textarea>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-5" style="height: 500px;overflow: auto">
+                        <div class="timeline timeline-single-column" id="timeline">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row btn-group-m-t">
+                    <div class="col-sm-10">
+                        <#button btnCss="info" name="提交" id="ensure" icon="fa-check"
+                        clickFun="StudentInfosInfoVisit.editSubmit()"/>
+                        <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser"
+                        clickFun="StudentInfosInfoVisit.close()"/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--<link href="${ctxPath}/static/css/time-axis.css" rel="stylesheet" type="text/css"/>-->
+<link href="${ctxPath}/static/css/timeline.css" rel="stylesheet" type="text/css"/>
+<script src="${ctxPath}/static/modular/system/StudentInfos/StudentInfos_visit.js"></script>
+@}

@@ -1,0 +1,132 @@
+@layout("/common/_container.html"){
+<link href=""/>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>学生信息管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <form id="StudentInfosTableForm">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <#NameCon id="name" name="name" inputName="姓名"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#NameCon id="phone" name="phone" inputName="电话号码"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#NameCon id="remark" name="remark" inputName="备注"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#TimeCon id="createTime" name="createTime" isTime="false" pattern="YYYY-MM-DD" inputName="创建时间"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <#TimeCon id="nextVisitDate" name="nextVisitDate" isTime="false" pattern="YYYY-MM-DD" inputName="回访时间"/>
+                                </div>
+                                <div class="col-sm-3">
+                                    <#NameCon id="currentOperatorName" name="currentOperatorName" inputName="咨询师" placeholder="咨询师姓名"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <#button name="搜索" icon="fa-search" clickFun="StudentInfos.search()"/>
+                                    <#button name="重置" icon="fa-trash" clickFun="StudentInfos.resetSearch()" space="true"/>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="hidden-xs" id="StudentInfosTableToolbar" role="group">
+                            @if(shiro.hasPermission("/studentInfos/add")){
+                            <#button name="添加" icon="fa-plus" clickFun="StudentInfos.openAddStudentInfos()"/>
+                            @}
+                            @if(shiro.hasPermission("/studentInfos/update")){
+                            <#button name="修改" icon="fa-edit" clickFun="StudentInfos.openStudentInfosDetail()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/studentInfos/delete")){
+                            <#button name="删除" icon="fa-remove" clickFun="StudentInfos.delete()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/studentInfos/importExcel")){
+                            <#button name="导入Excel" icon="fa-plus" clickFun="StudentInfos.openUploadView()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/studentInfos/share")){
+                            <#button name="分量" icon="fa-share" clickFun="StudentInfos.share()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/studentInfos/consult")){
+                            <#button name="咨询" icon="fa-graduation-cap" clickFun="StudentInfos.consult()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="StudentInfosTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--上传excelmodal-->
+<div class="modal fade" id="importModalLabel" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title">上传excel</h5>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="file-loading">
+                        <input id="file" name="file" multiple type="file"/>
+                    </div>
+                    <div id="kartik-file-errors"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--展示用户modal-->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalTitle">用户列表</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="userTableForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <#NameCon id="name" name="name" inputName="姓名"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <#button name="搜索" icon="fa-search" clickFun="StudentInfos.searchUser()"/>
+                            <#button name="重置" icon="fa-trash" clickFun="StudentInfos.resetUserSearch()" space="true"/>
+                        </div>
+                    </div>
+                </form>
+                <#table id="userTable"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" title="确定" onclick="StudentInfos.submit()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="${ctxPath}/static/css/combo/combo.select.css" media="all" rel="stylesheet"type="text/css"/>
+<script src="${ctxPath}/static/js/bootstrap-fileinput/fileinput.min.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/js/bootstrap-fileinput/locales/zh.js" type="text/javascript"></script>
+<script src="${ctxPath}/static/modular/system/StudentInfos/StudentInfos.js"></script>
+
+<!--<script src="${ctxPath}/static/js/ajaxfileupload.js"></script>-->
+@}

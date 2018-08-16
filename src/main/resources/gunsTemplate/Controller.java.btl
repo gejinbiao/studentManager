@@ -1,0 +1,140 @@
+package ${controller.packageName};
+
+<% for(import in controller.imports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}控制器
+ *
+ * @author fengshuonan
+ * @Date ${tool.currentTime()}
+ */
+@Controller
+@RequestMapping("/${context.bizEnName}")
+public class ${context.bizEnBigName}Controller extends BaseController {
+
+    @Autowired
+    private ${context.bizEnName}Service ${context.lowerName}Service;
+
+    private String PREFIX = "/${context.moduleName}/${context.bizEnName}/";
+
+    /**
+     * 跳转到${context.bizChName}首页
+     */
+    @RequestMapping("")
+    public String index() {
+        return PREFIX + "${context.bizEnName}.html";
+    }
+
+    /**
+     * 跳转到添加${context.bizChName}
+     */
+    @RequestMapping("/${context.bizEnName}_add")
+    public String ${context.bizEnName}Add() {
+        return PREFIX + "${context.bizEnName}_add.html";
+    }
+
+    /**
+     * 跳转到修改${context.bizChName}
+     */
+    @RequestMapping("/${context.bizEnName}_update/{${context.lowerName}Id}")
+    public String ${context.bizEnName}Update(@PathVariable Integer ${context.lowerName}Id, ModelMap model) {
+
+        if (ToolUtil.isEmpty(${context.lowerName}Id)) {
+             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+        ${context.bizEnName} ${context.lowerName} = ${context.lowerName}Service.select${context.bizEnName}ByKey(${context.lowerName}Id);
+        model.put("${context.lowerName}", ${context.lowerName});
+        return PREFIX + "${context.bizEnName}_edit.html";
+    }
+
+    /**
+     * 获取${context.bizChName}列表
+     */
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public Object list(${context.bizEnName} bean, PageReq params) {
+
+            try {
+                List<${context.bizEnName}> ${context.lowerName} = ${context.lowerName}Service.selectByExample(bean, params);
+                return packForBT(${context.lowerName});
+            } catch (Exception e) {
+                Log4jUtil.error(e, "查询${context.bizChName}错误");
+            }
+            return null;
+    }
+
+    /**
+     * 新增${context.bizChName}
+     */
+    @RequestMapping(value = "/add")
+    @ResponseBody
+    public Object add(${context.bizEnName} bean) {
+
+        try {
+            ShiroUser user = ShiroKit.getUser();
+            bean.setOperator(user.getId());
+            int i = ${context.lowerName}Service.add${context.bizEnName}(bean);
+            if (i > 0) {
+                return super.SUCCESS_TIP;
+            } else {
+                return new ErrorTip(0, "添加失败");
+            }
+        } catch (Exception e) {
+            Log4jUtil.error(e, "添加${context.bizChName}错误");
+            return ErrorTip.error();
+        }
+    }
+
+    /**
+     * 删除${context.bizChName}
+     */
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public Object delete(@RequestParam String ${context.lowerName}Ids) {
+
+        if (ToolUtil.isEmpty(${context.lowerName}Ids)) {
+                throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+            }
+            int i = ${context.lowerName}Service.delete${context.bizEnName}(${context.lowerName}Ids);
+            if (i > 0) {
+                return SUCCESS_TIP;
+            } else {
+                return new ErrorTip(0, "删除失败");
+            }
+    }
+
+
+    /**
+     * 修改${context.bizChName}
+     */
+    @RequestMapping(value = "/update")
+    @ResponseBody
+    public Object update(@Valid ${context.bizEnName} bean, BindingResult result) {
+
+        try {
+            if (result.hasErrors()) {
+                throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+            }
+            int i = ${context.lowerName}Service.update${context.bizEnName}(bean);
+            if (i > 0) {
+                return super.SUCCESS_TIP;
+            } else {
+                return new ErrorTip(0, "修改失败");
+            }
+        } catch (Exception e) {
+            Log4jUtil.error(e, "修改${context.bizChName}错误");
+            return ErrorTip.error();
+        }
+    }
+
+    /**
+     * ${context.bizChName}详情
+     */
+    @RequestMapping(value = "/detail")
+    @ResponseBody
+    public Object detail() {
+        return null;
+    }
+}

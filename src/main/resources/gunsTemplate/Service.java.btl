@@ -1,0 +1,55 @@
+package ${service.packageName};
+
+<% for(import in service.serviceImports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}Service业务接口
+ *
+ * @author gjb
+ * @Date ${tool.currentTime()}
+ */
+public interface ${context.bizEnBigName}Service {
+
+    /**
+         * 获取${context.bizChName}列表
+         *
+         * @param bean
+         * @param params
+         * @return
+         */
+        List<${context.bizEnName}> selectByExample(${context.bizEnName} bean, PageReq params);
+
+        /**
+         * 新增${context.bizChName}
+         *
+         * @param bean
+         * @return
+         */
+        int add${context.bizEnName}(${context.bizEnName} bean);
+
+        /**
+         * 修改${context.bizChName}
+         *
+         * @param bean
+         * @return
+         */
+        int update${context.bizEnName}(${context.bizEnName} bean);
+
+        /**
+         * 获取${context.bizChName}
+         *
+         * @param ${context.lowerName}Id
+         * @return
+         */
+        ${context.bizEnName} select${context.bizEnName}ByKey(Integer ${context.lowerName}Id);
+
+
+        /**
+         * 删除${context.bizChName}
+         * @param ${context.lowerName}Ids
+         * @return
+         */
+        int delete${context.bizEnName}(String ${context.lowerName}Ids);
+}

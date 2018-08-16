@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.common.persistence.dao.CodeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.CodeModel">
+        <result column="COLUMN_NAME" property="columnName"/>
+        <result column="DATA_TYPE" property="dataType"/>
+        <result column="COLUMN_COMMENT" property="columnComment"/>
+        <result column="DATA_LENGTH" property="dataLength"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        COLUMN_NAME,DATA_TYPE,COLUMN_COMMENT,CHARACTER_MAXIMUM_LENGTH DATA_LENGTH
+    </sql>
+
+    <!--根据表明查询表结构-->
+    <select id="getTableStructure" parameterType="string" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        FROM
+        INFORMATION_SCHEMA. COLUMNS
+        WHERE
+        table_name = #{_parameter};
+    </select>
+
+</mapper>

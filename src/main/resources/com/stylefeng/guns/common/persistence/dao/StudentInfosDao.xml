@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.StudentInfosDao">
+
+<!-- Result Map-->
+<resultMap id="BaseResultMap" type="com.stylefeng.guns.modular.system.entity.StudentInfos" >
+    <result column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="phone" property="phone"/>
+    <result column="remark" property="remark"/>
+    <result column="create_time" property="createTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="operator" property="operator"/>
+    <result column="operator_name" property="operatorName"/>
+    <result column="current_operator_name" property="currentOperatorName"/>
+    <result column="status" property="status"/>
+    <result column="status_name" property="statusName"/>
+    <result column="next_visit_date" property="nextVisitDate"/>
+    <result column="level" property="level"/>
+    <result column="level_name" property="levelName"/>
+    <result column="type" property="type"/>
+    <result column="sex" property="sex"/>
+    <result column="sex_name" property="sexName"/>
+</resultMap>
+
+
+    <select id="selectStudentsByUserId" resultMap="BaseResultMap" parameterType="com.stylefeng.guns.modular.system.entity.StudentInfos">
+        select stu.id,
+        stu.name,
+        stu.phone,
+        stu.remark,
+        stu.create_time,
+        stu.update_time,
+        stu.operator,
+        stu.status,
+        dict2.name status_name,
+        stu.next_visit_date,
+        stu.level,
+        dict1.name level_name,
+        user1.name operator_name,
+        stu.current_operator,
+        user2.name current_operator_name,
+        stu.type,
+        stu.sex,
+        sex.name sex_name
+         from student_infos stu
+        left JOIN user user1 on stu.operator = user1.id
+        left JOIN user user2 on stu.current_operator = user2.id
+        left JOIN (select num,name from dict where pid in(select id from dict where dic_code='level')) dict1 on stu.level = dict1.num
+        left JOIN (select num,name from dict where pid in(select id from dict where dic_code='signUp')) dict2 on stu.status = dict2.num
+        left JOIN (select num,name from dict where pid in(select id from dict where dic_code='sex')) sex on stu.status = sex.num
+        where
+          ( (CASE when (SELECT
+            sum(data_authority)
+        FROM
+            role_data_authority
+        WHERE
+            role_id IN (
+                SELECT
+                    roleid
+                FROM
+                    USER
+                WHERE
+                    id = #{currentOperator}
+            )) > 0 then 1=1 else current_operator=#{currentOperator} end ))
+            <if test="name != null and name != ''">
+                and stu.name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and stu.phone = #{phone}
+            </if>
+            <if test="createTime != null">
+                and DATE_FORMAT(stu.create_time,'%Y-%m-%d')= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+            </if>
+            <if test="nextVisitDate != null">
+                and DATE_FORMAT(stu.next_visit_date,'%Y-%m-%d')= DATE_FORMAT(#{nextVisitDate},'%Y-%m-%d')
+            </if>
+            <if test="currentOperatorName != null and currentOperatorName != ''">
+                and user2.name = #{currentOperatorName}
+            </if>
+            order by stu.create_time desc
+    </select>
+
+</mapper>

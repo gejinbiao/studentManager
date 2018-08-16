@@ -1,0 +1,64 @@
+package ${service.packageName}.impl;
+
+<% for(import in service.serviceImplImports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}Service接口实现
+ *
+ * @author gjb
+ * @Date ${tool.currentTime()}
+ */
+@Service
+public class ${context.bizEnBigName}ServiceImpl implements ${context.bizEnBigName}Service {
+
+    @Autowired
+    private ${context.bizEnBigName}Dao ${context.lowerName}Dao;
+
+    public List<${context.bizEnBigName}> selectByExample(${context.bizEnBigName} bean, PageReq params) {
+        PageHelper.offsetPage(params.getOffset(), params.getLimit());
+        Example example = new Example(${context.bizEnBigName}.class);
+        example.orderBy("createTime").desc();
+        Example.Criteria criteria = example.createCriteria();
+        if (bean.getCreateTime() != null) {
+            criteria.andCondition(" DATE_FORMAT(create_time,'%Y-%m-%d')=", new SimpleDateFormat("yyyy-MM-dd").format(bean.getCreateTime()));
+            bean.setCreateTime(null);
+        }
+         if(bean.getUpdateTime() != null){
+            criteria.andCondition(" DATE_FORMAT(update_time,'%Y-%m-%d')=", new SimpleDateFormat("yyyy-MM-dd").format(bean.getUpdateTime()));
+            bean.setUpdateTime(null);
+        }
+        criteria.andEqualTo(bean);
+        List<${context.bizEnBigName}> ${context.lowerName}s = ${context.lowerName}Dao.selectByExample(example);
+        return ${context.lowerName}s;
+    }
+
+    public int add${context.bizEnBigName}(${context.bizEnBigName} bean) {
+        int count = ${context.lowerName}Dao.insertSelective(bean);
+        return count;
+    }
+
+
+    public int update${context.bizEnBigName}(${context.bizEnBigName} bean) {
+        int count = ${context.lowerName}Dao.updateByPrimaryKeySelective(bean);
+        return count;
+    }
+
+
+    public ${context.bizEnBigName} select${context.bizEnBigName}ByKey(Integer ${context.lowerName}Id) {
+        return ${context.lowerName}Dao.selectByPrimaryKey(${context.lowerName}Id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int delete${context.bizEnBigName}(String ${context.lowerName}Ids) {
+        String[] split = ${context.lowerName}Ids.split(",");
+        Integer count = 0;
+        for (String ${context.lowerName}Id : split) {
+            int nu = ${context.lowerName}Dao.deleteByPrimaryKey(${context.lowerName}Id);
+            count += nu;
+        }
+        return count;
+    }
+
+}

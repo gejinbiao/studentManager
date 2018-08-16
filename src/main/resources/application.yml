@@ -1,0 +1,19 @@
+#激活哪一个环境的配置文
+spring:
+      profiles:
+        active: @environment@
+
+---
+#开发环境
+spring:
+    profiles: dev
+
+server:
+  port: 8080
+---
+#生产环境
+spring:
+  profiles: pro
+
+server:
+  port: 8080

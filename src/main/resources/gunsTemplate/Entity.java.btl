@@ -1,0 +1,15 @@
+package ${entity.packageName};
+
+<% for(import in entity.imports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.bizChName}实体类
+ *
+ * @author gjb
+ * @Date ${tool.currentTime()}
+ */
+public class ${context.bizEnBigName} implements Serializable{
+    ${entity.fields}
+}
