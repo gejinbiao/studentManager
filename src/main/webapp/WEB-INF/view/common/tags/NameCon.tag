@@ -6,9 +6,9 @@
 @*/
 <div class="input-group">
     <div class="input-group-btn">
-        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
-                type="button">${inputName}
+        <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">
+            ${name}
         </button>
     </div>
-    <input type="text" class="form-control" id="${id}" placeholder="${placeholder!}"  name="${name}"/>
+    <input type="text" class="form-control" id="${id}" placeholder="${placeholder!}"  name="${id}"/>
 </div>

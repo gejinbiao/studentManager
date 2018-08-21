@@ -20,31 +20,49 @@ var StudentInfosInfoDlg = {
                 }
             }
         },
-        remark: {
+        type: {
             validators: {
                 notEmpty: {
-                    message: '不能为空'
+                    message: '咨询层次不能为空'
                 }
             }
         },
-        createTime: {
+        sex: {
             validators: {
                 notEmpty: {
-                    message: '创建时间不能为空'
+                    message: '性别不能为空'
                 }
             }
         },
-        updateTime: {
+        level: {
             validators: {
                 notEmpty: {
-                    message: '修改时间不能为空'
+                    message: '级别不能为空'
+                }, callback: {
+                    message: '必须选择一个级别',
+                    callback: function (value) {
+                        if (value == '' || value == '0' || value == 0 || value == undefined) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
                 }
             }
         },
-        operator: {
+        status: {
             validators: {
                 notEmpty: {
-                    message: '操作人不能为空'
+                    message: '是否报名不能为空'
+                }, callback: {
+                    message: '必须选择一个是否报名',
+                    callback: function (value) {
+                        if (value == '' || value == '0' || value == 0 || value == undefined) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -156,4 +174,13 @@ StudentInfosInfoDlg.editSubmit = function () {
 $(function () {
     //绑定效验规则
     Feng.initValidator("studentInfosForm", StudentInfosInfoDlg.validateFields);
+
+    //加载级别
+    Feng.getDicByCode("level", "level");
+
+    //加载性别
+    Feng.getDicByCode("sex", "sex");
+
+    //加载是否报名
+    Feng.getDicByCode("signUp", "status");
 });

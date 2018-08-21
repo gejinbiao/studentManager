@@ -160,5 +160,21 @@ var Feng = {
             live: 'enabled',
             message: '该字段不能为空'
         });
+    },
+    //根据code获取字典
+    getDicByCode: function (value, id) {
+        //提交信息
+        var ajax = new $ax(Feng.ctxPath + "/dict/selectByDicCode", function (data) {
+            var option = '<option value="0">请选择</option>';
+            $.each(data, function (i, e) {
+                option += '<option value="' + e.num + '">' + e.name + '</option>';
+            });
+            $('#' + id).append(option);
+
+        }, function (data) {
+            Feng.error("加载级别失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("dicCode", value);
+        ajax.start();
     }
 };

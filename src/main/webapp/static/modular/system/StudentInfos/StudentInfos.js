@@ -67,12 +67,17 @@ StudentInfos.check = function () {
  * 点击添加学生信息
  */
 StudentInfos.openAddStudentInfos = function () {
+    var width = $(document.body).width() - 100;
+    console.log(width);
+    var height = $(document.body).height() - 100;
+    console.log(height);
     var index = layer.open({
         type: 2,
         title: '添加学生信息',
-        area: ['800px', '420px'], //宽高
+        area: ['800px', height +'px'], //宽高
         fix: false, //不固定
         maxmin: true,
+        scrollbar: false,
         content: Feng.ctxPath + '/StudentInfos/StudentInfos_add'
     });
     this.layerIndex = index;

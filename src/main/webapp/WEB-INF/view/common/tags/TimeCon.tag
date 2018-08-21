@@ -9,11 +9,11 @@
 <div class="input-group">
     <div class="input-group-btn">
         <button data-toggle="dropdown" class="btn btn-white dropdown-toggle"
-                type="button">${inputName}
+                type="button">${name}
         </button>
     </div>
     <input type="text" class="form-control layer-date"
-           onclick="laydate({istime: ${isTime}, format: '${pattern}'})" id="${id}" name="${name}"/>
+           onclick="laydate({istime: ${isTime}, format: '${pattern}'})" id="${id}" name="${id}"/>
 </div>
 
 @if(isNotEmpty(underline) && underline == 'true'){

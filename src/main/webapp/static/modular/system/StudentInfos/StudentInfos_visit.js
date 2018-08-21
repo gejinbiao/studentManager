@@ -21,6 +21,12 @@ var StudentInfosInfoVisit = {
                     message: '电话号码不能为空'
                 }
             }
+        },type: {
+            validators: {
+                notEmpty: {
+                    message: '咨询层次不能为空'
+                }
+            }
         },
         level: {
             validators: {
@@ -190,13 +196,13 @@ $(function () {
 
 
     //加载级别
-    StudentInfosInfoVisit.getDicByCode("level", "level");
+    Feng.getDicByCode("level", "level");
 
-    //加载级别
-    StudentInfosInfoVisit.getDicByCode("sex", "sex");
+    //加载性别
+    Feng.getDicByCode("sex", "sex");
 
     //加载是否报名
-    StudentInfosInfoVisit.getDicByCode("signUp", "status");
+    Feng.getDicByCode("signUp", "status");
 
     //加载评论列表
     StudentInfosInfoVisit.getVisitRecord();
@@ -290,19 +296,4 @@ function check(i) {
 
 }
 
-StudentInfosInfoVisit.getDicByCode = function (value, id) {
-    //提交信息
-    var ajax = new $ax(Feng.ctxPath + "/dict/selectByDicCode", function (data) {
-        var option = '<option value="0">请选择</option>';
-        $.each(data, function (i, e) {
-            option += '<option value="' + e.num + '">' + e.name + '</option>';
-        });
-        $('#' + id).append(option);
-
-    }, function (data) {
-        Feng.error("加载级别失败!" + data.responseJSON.message + "!");
-    });
-    ajax.set("dicCode", value);
-    ajax.start();
-}
 

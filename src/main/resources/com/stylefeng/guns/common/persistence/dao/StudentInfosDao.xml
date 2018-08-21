@@ -69,12 +69,19 @@
             <if test="phone != null and phone != ''">
                 and stu.phone = #{phone}
             </if>
-            <if test="createTime != null">
-                and DATE_FORMAT(stu.create_time,'%Y-%m-%d')= DATE_FORMAT(#{createTime},'%Y-%m-%d')
-            </if>
-            <if test="nextVisitDate != null">
-                and DATE_FORMAT(stu.next_visit_date,'%Y-%m-%d')= DATE_FORMAT(#{nextVisitDate},'%Y-%m-%d')
-            </if>
+            <choose>
+                <when test="createTime != null and nextVisitDate != null">
+                    and (DATE_FORMAT(stu.create_time,'%Y-%m-%d')= DATE_FORMAT(#{createTime},'%Y-%m-%d') or DATE_FORMAT(stu.next_visit_date,'%Y-%m-%d')= DATE_FORMAT(#{nextVisitDate},'%Y-%m-%d'))
+                </when>
+                <otherwise>
+                    <if test="createTime != null">
+                        and DATE_FORMAT(stu.create_time,'%Y-%m-%d')= DATE_FORMAT(#{createTime},'%Y-%m-%d')
+                    </if>
+                    <if test="nextVisitDate != null">
+                        and DATE_FORMAT(stu.next_visit_date,'%Y-%m-%d')= DATE_FORMAT(#{nextVisitDate},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
             <if test="currentOperatorName != null and currentOperatorName != ''">
                 and user2.name = #{currentOperatorName}
             </if>
