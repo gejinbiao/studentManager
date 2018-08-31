@@ -18,7 +18,7 @@ public interface IDictService {
      * @author fengshuonan
      * @Date 2017/4/27 17:01
      */
-    void addDict(String dictName, String dictValues);
+    void addDict(String dictCode, String dictName, String dictValues);
 
     /**
      * 编辑字典
@@ -26,7 +26,7 @@ public interface IDictService {
      * @author fengshuonan
      * @Date 2017/4/28 11:01
      */
-    void editDict(Integer dictId, String dictName, String dicts);
+    void editDict(Integer dictId,String dictCode, String dictName, String dicts);
 
     /**
      * 删除字典
@@ -42,5 +42,14 @@ public interface IDictService {
      * @return
      */
     List<Dict> selectDicByDicCode(String dicCode);
+
+
+    /**
+     * 获取树形列表
+     * @return
+     */
+    List<Dict> selectTreeNode();
+
+
 
 }

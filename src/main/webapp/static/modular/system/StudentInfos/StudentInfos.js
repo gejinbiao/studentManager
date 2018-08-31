@@ -7,7 +7,8 @@ var StudentInfos = {
     table: null,
     layerIndex: -1,
     userTableId: "userTable",
-    userTable: null
+    userTable: null,
+    dicts : null
 };
 
 /**
@@ -20,21 +21,18 @@ StudentInfos.initColumn = function () {
         {title: '姓名', field: 'name', visible: true, align: 'center', valign: 'middle'},
         {title: '电话号码', field: 'phone', visible: true, align: 'center', valign: 'middle'},
         {title: '性别', field: 'sexName', visible: true, align: 'center', valign: 'middle'},
-        {title: '级别', field: 'level', visible: false, align: 'center', valign: 'middle'},
         {title: '级别', field: 'levelName', visible: true, align: 'center', valign: 'middle'},
-        {title: '层次', field: 'type', visible: true, align: 'center', valign: 'middle'},
+        {title: '当前层次', field: 'currentType', visible: true, align: 'center', valign: 'middle'},
+        {title: '咨询层次', field: 'type', visible: true, align: 'center', valign: 'middle'},
+        {title: '是否上门', field: 'visit', visible: true, align: 'center', valign: 'middle', formatter:yesOrNoFormatter},
+        /*{title: '是否咨询量', field: 'source', visible: true, align: 'center', valign: 'middle', formatter:yesOrNoFormatter},
+        {title: '是否分配', field: 'flag', visible: true, align: 'center', valign: 'middle',formatter:yesOrNoFormatter},*/
         {title: '状态', field: 'status', visible: false, align: 'center', valign: 'middle'},
         {title: '状态', field: 'statusName', visible: true, align: 'center', valign: 'middle'},
         {title: '备注', field: 'remark', visible: true, align: 'center', valign: 'middle'},
-        {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'},
-        {
-            title: '回访时间',
-            field: 'nextVisitDate',
-            visible: true,
-            align: 'center',
-            valign: 'middle',
-            formatter: "visitDateForamtter"
-        },
+       /* {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'},*/
+        { title: '回访时间',field: 'updateTime',visible: true,align: 'center',valign: 'middle'},
+        { title: '下次回访时间',field: 'nextVisitDate',visible: true,align: 'center',valign: 'middle'},
         {title: '操作人', field: 'operatorName', visible: true, align: 'center', valign: 'middle'},
         {title: '当前咨询师', field: 'currentOperatorName', visible: true, align: 'center', valign: 'middle'}
     ];
@@ -68,13 +66,11 @@ StudentInfos.check = function () {
  */
 StudentInfos.openAddStudentInfos = function () {
     var width = $(document.body).width() - 100;
-    console.log(width);
     var height = $(document.body).height() - 100;
-    console.log(height);
     var index = layer.open({
         type: 2,
         title: '添加学生信息',
-        area: ['800px', height +'px'], //宽高
+        area: ['850px', height +'px'], //宽高
         fix: false, //不固定
         maxmin: true,
         scrollbar: false,
@@ -94,10 +90,12 @@ StudentInfos.openStudentInfosDetail = function () {
             Feng.info("修改只能选择一条记录！");
             return;
         }
+        var width = $(document.body).width() - 300;
+        var height = $(document.body).height() - 100 ;
         var index = layer.open({
             type: 2,
             title: '学生信息详情',
-            area: ['800px', '450px'], //宽高
+            area: [width+'px', height +'px'], //宽高
             fix: false, //不固定
             maxmin: true,
             content: Feng.ctxPath + '/StudentInfos/StudentInfos_update/' + StudentInfos.seItem.id
@@ -160,29 +158,15 @@ StudentInfos.openUploadView = function () {
 
 };
 
-/**
- * 页面加载完后立即执行初始化创建日期及回访日期
- */
-$(document).ready(function () {
-    var myDate = new Date();
-//获取当前年
-    var year = myDate.getFullYear();
-//获取当前月
-    var month = myDate.getMonth() + 1;
-//获取当前日
-    var date = myDate.getDate();
-
-    var time = year + "-" + month + "-" + date;
-    $("#createTime").val(time);
-    $("#nextVisitDate").val(time);
-});
-
 
 $(function () {
+    var height=$("#ibox-title").height();
+
     var defaultColunms = StudentInfos.initColumn();
     var table = new BSTable(StudentInfos.id, "/StudentInfos/list", defaultColunms);
     table.setPaginationType("server");
     StudentInfos.table = table.init();
+
     $("#file").fileinput({
         language: 'zh',  //设置语言
         enctype: 'multipart/form-data',//文件类型
@@ -193,6 +177,17 @@ $(function () {
         allowedFileExtensions: ['xlsx'],
         uploadUrl: Feng.ctxPath + '/StudentInfos/importExcel'
     });
+
+    //加载字典列表
+    StudentInfos.dicts = Feng.getDicts();
+
+    //加载级别
+    Feng.getDicByCode(StudentInfos.dicts, "level", "level");
+    //加载是否分配
+    Feng.getDicByCode(StudentInfos.dicts, "yesOrNo", "flag");
+
+    //加载是否咨询量
+    Feng.getDicByCode(StudentInfos.dicts, "yesOrNo", "source");
 });
 
 //导入文件上传完成之后的事件
@@ -224,10 +219,10 @@ StudentInfos.share = function () {
             {title: '部门', field: 'deptName', align: 'center', valign: 'middle'}
         ];
         var userTable = new BSTable(StudentInfos.userTableId, "/mgr/list2", defaultColunms);
-        userTable.height = 400;
         userTable.setPaginationType("server");
         userTable.setShowRefresh(false);
         userTable.setShowColumnsFlag(false);
+        userTable.setHeight(500);
         StudentInfos.userTable = userTable.init();
     }
 
@@ -293,7 +288,10 @@ StudentInfos.submit = function () {
  * 双击事件
  */
 $('#' + StudentInfos.id).on('dbl-click-cell.bs.table', function (target, field, value, row) {
-    cons(row.id);
+    var double = $("#doubleClick").val();
+    if(double != undefined && double  != ''){
+        cons(row.id);
+    }
 });
 
 /**
@@ -311,9 +309,7 @@ StudentInfos.consult = function () {
 //咨询
 function cons(id) {
     var width = $(document.body).width() - 100;
-    console.log(width);
     var height = $(document.body).height() - 100;
-    console.log(height);
     var index = layer.open({
         type: 2,
         title: '学生信息详情',
@@ -324,4 +320,22 @@ function cons(id) {
         content: Feng.ctxPath + '/StudentInfos/StudentInfos_visit/' + id
     });
     StudentInfos.layerIndex = index;
+}
+
+/**
+ * 是否
+ * @param value
+ * @param row
+ * @param index
+ */
+function yesOrNoFormatter(value, row, index) {
+
+    if(value == '0'){
+        return '否';
+    }else if(value == '1'){
+        return '是';
+    }else {
+        return '--';
+    }
+
 }

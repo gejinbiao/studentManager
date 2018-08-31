@@ -368,7 +368,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` VALUES ('1', 'girl.gif', 'admin', 'ecfadcde9305f8891bcfe5a1e28c253e', '8pgby', '张三', '2017-05-05 00:00:00', '2', 'sn93@qq.com', '18200000000', '1', '27', '1', '2016-01-29 08:49:53', '25');
 INSERT INTO `user` VALUES ('44', null, 'test', '45abb7879f6a8268f1ef600e6038ac73', 'ssts3', 'test', '2017-05-01 00:00:00', '1', 'abc@123.com', '', '5', '26', '1', '2017-05-16 20:33:37', null);
 
---回访记录表
+-- 回访记录表
 DROP TABLE IF EXISTS `visitor_record`;
 CREATE TABLE `visitor_record` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -382,7 +382,7 @@ CREATE TABLE `visitor_record` (
 SET FOREIGN_KEY_CHECKS=1;
 
 
---学生信息表
+-- 学生信息表
 DROP TABLE IF EXISTS `student_infos`;
 CREATE TABLE `student_infos` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
@@ -401,3 +401,18 @@ CREATE TABLE `student_infos` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=65124 DEFAULT CHARSET=utf8;
 SET FOREIGN_KEY_CHECKS=1;
+
+-- 学生表增加是否上门
+alter table student_infos add visit char(1) DEFAULT '0';
+alter table student_infos MODIFY COLUMN visit char(1) DEFAULT '0' COMMENT '是否上门';
+-- 学生表增加来源
+alter table student_infos add source char(1);
+alter table student_infos MODIFY COLUMN source char(1) COMMENT '来源';
+-- 增加当前层次
+alter table student_infos add current_type varchar(50);
+alter TABLE student_infos MODIFY COLUMN current_type varchar(50) COMMENT '当前层次';
+-- 是否分配
+alter table student_infos add flag char(1) DEFAULT '0';
+alter TABLE student_infos MODIFY COLUMN flag char(1) DEFAULT '0' COMMENT '是否分配';
+-- 修改下次回访时间
+ALTER table student_infos MODIFY next_visit_date datetime COMMENT  '下次回访时间'

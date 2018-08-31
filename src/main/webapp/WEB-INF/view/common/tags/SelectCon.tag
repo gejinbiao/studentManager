@@ -10,7 +10,7 @@
             ${name}
         </button>
     </div>
-    <select class="form-control" id="${id}">
+    <select class="form-control" id="${id}" name="${id}">
         ${tagBody!}
     </select>
 </div>

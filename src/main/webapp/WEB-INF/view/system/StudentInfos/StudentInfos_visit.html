@@ -7,6 +7,8 @@
                 <input type="hidden" id="id" name="id" value="${studentInfos.id}">
                 <input type="hidden" id="hideLevel" name="hideLevel" value="${studentInfos.level}">
                 <input type="hidden" id="hideStatus" name="hideStatus" value="${studentInfos.status}">
+                <input type="hidden" id="hideSex" name="hideSex" value="${studentInfos.sex}">
+                <input type="hidden" id="hideVisit" name="hideVisit" value="${studentInfos.visit}">
 
                 <div class="row">
                     <div class="col-sm-7" >
@@ -19,11 +21,11 @@
 
                             <#input id="type" name="咨询层次" underline="true" value="${studentInfos.type}"/>
 
-                            <#input id="remark" name="备注" underline="true" value="${studentInfos.remark}"/>
+                            <#select id="visit" name="是否上门" underline="true" value="${studentInfos.visit}"/>
 
+                            <#input id="createTime" name="创建时间" underline="true" value="${studentInfos.createTime}"
+                            disabled="disabled"/>
 
-                            <#TimeCon id="nextVisitDate" name="下次回访时间" underline="true" isTime="false"
-                            pattern="YYYY-MM-DD"  value="${studentInfos.nextVisitDate}"/>
 
                         </div>
 
@@ -36,8 +38,10 @@
 
                             <#select id="status" name="是否报名" underline="true" value="${studentInfos.status}"/>
 
-                            <#input id="createTime" name="创建时间" underline="true" value="${studentInfos.createTime}"
-                            disabled="disabled"/>
+                            <#input id="remark" name="备注" underline="true" value="${studentInfos.remark}"/>
+
+                            <#TimeCon id="nextVisitDate" name="下次回访时间" underline="true" isTime="true"
+                            pattern="YYYY-MM-DD hh:mm:ss"  value="${studentInfos.nextVisitDate}"/>
                         </div>
 
                         <div class="row">

@@ -39,6 +39,8 @@ $('.close-link').click(function () {
 if (top == this) {
     var gohome = '<div class="gohome"><a class="animated bounceInUp" href="' + Feng.ctxPath + '/" title="返回首页"><i class="fa fa-home"></i></a></div>';
     $('body').append(gohome);
+    //如果是独立页面去掉 独立页面按钮
+    $("#independent").css("display","none");
 }
 
 //animation.css

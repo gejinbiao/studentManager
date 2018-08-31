@@ -4,6 +4,7 @@
 var DictInfoDlg = {
     count: $("#itemSize").val(),
     dictName: '',			//字典的名称
+    dictCode: '',           //字典英文名称
     mutiString: '',		//拼接字符串内容(拼接字典条目)
     itemTemplate: $("#itemTemplate").html()
 };
@@ -67,6 +68,7 @@ DictInfoDlg.collectData = function () {
         mutiString = mutiString + (num + ":" + name + ";");
     });
     this.dictName = $("#dictName").val();
+    this.dictCode = $("#dictCode").val();
     this.mutiString = mutiString;
 };
 
@@ -76,6 +78,12 @@ DictInfoDlg.collectData = function () {
  */
 DictInfoDlg.addSubmit = function () {
     this.collectData();
+    var dictCode = $("#dictCode").val();
+    var dictName = $("#dictName").val();
+    if(dictCode == '' || dictName == ''){
+        Feng.alertFail("编码或名称不能为空");
+        return;
+    }
     //提交信息
     var ajax = new $ax(Feng.ctxPath + "/dict/add", function (data) {
         Feng.success("添加成功!");
@@ -84,6 +92,7 @@ DictInfoDlg.addSubmit = function () {
     }, function (data) {
         Feng.error("添加失败!" + data.responseJSON.message + "!");
     });
+    ajax.set('dictCode',this.dictCode);
     ajax.set('dictName',this.dictName);
     ajax.set('dictValues',this.mutiString);
     ajax.start();
@@ -102,6 +111,7 @@ DictInfoDlg.editSubmit = function () {
         Feng.error("修改失败!" + data.responseJSON.message + "!");
     });
     ajax.set('dictId',$("#dictId").val());
+    ajax.set('dictCode',this.dictCode);
     ajax.set('dictName',this.dictName);
     ajax.set('dictValues',this.mutiString);
     ajax.start();

@@ -3,7 +3,6 @@
     <div class="ibox-content">
         <form id="studentInfosForm">
             <div class="form-horizontal">
-
                 <input type="hidden" id="id" value="">
 
                 <div class="row">
@@ -13,20 +12,28 @@
 
                         <#input id="phone" name="电话号码" underline="true" />
 
+                        <#input id="currentType" name="当前层次" underline="true" />
+
                         <#input id="type" name="咨询层次" underline="true" />
 
-                        <#input id="remark" name="备注" underline="true" />
+                        <#select id="visit" name="是否上门" underline="true" />
+
+
 
                     </div>
 
                     <!--第二列-->
-                    <div class="col-sm-6 b-r">
+                    <div class="col-sm-6">
 
-                        <#select id="sex" name="性别" underline="true" />
+                        <#select id="sex" name="性别" underline="true"/>
 
-                        <#select id="level" name="优质级别" underline="true" />
+                        <#select id="level" name="优质级别"  underline="true"/>
 
                         <#select id="status" name="是否报名" underline="true" />
+
+                        <#select id="source" name="是否咨询量" underline="true"/>
+
+                        <#input id="remark" name="备注"  />
 
                     </div>
 

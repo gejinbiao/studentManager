@@ -1,14 +1,27 @@
 @layout("/common/_container.html"){
-<div class="container-fluid" style="padding: 0 !important;">
-	<div class="row">
-		<div class="col-sm-12">
-			@for(notice in noticeList){
-				<div class="alert alert-success alert-dismissable">
-					<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-					${notice.content}
-				</div>
-			@}
-		</div>
-	</div>
+<!--<div class="container-fluid" style="padding: 0 !important;">
+    <div class="row">
+        &lt;!&ndash; 为ECharts准备一个具备大小（宽高）的Dom &ndash;&gt;
+        <div id="main" style="width: 600px;height:400px;"></div>
+    </div>
+</div>-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>图表展示</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-6 b-r">
+                      <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                        <div id="main" style="width: 600px;height:400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="${ctxPath}/static/js/echarts/echarts.common.min.js"></script>
+<script src="${ctxPath}/static/modular/system/blackboard/blackboard.js"></script>
 @}

@@ -5,6 +5,7 @@ import com.stylefeng.guns.common.page.PageReq;
 import com.stylefeng.guns.modular.system.entity.VisitorRecord;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生信息Service业务接口
@@ -86,4 +87,10 @@ public interface StudentInfosService {
      * @return
      */
     List<StudentInfos> selectStudentsByUserId(StudentInfos studentInfos, PageReq params);
+
+    /**
+     * 每月上门每人
+     * @return
+     */
+    List<Map<String, Object>> selectCountVisit();
 }

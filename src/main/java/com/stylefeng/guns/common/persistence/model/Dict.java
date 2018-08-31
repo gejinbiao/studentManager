@@ -1,5 +1,7 @@
 package com.stylefeng.guns.common.persistence.model;
 
+import java.util.List;
+
 /**
  * <p>
  * 字典表
@@ -30,6 +32,15 @@ public class Dict extends Base {
      */
     private String  tips;
 
+    List<Dict> dictList;
+
+    public List<Dict> getDictList() {
+        return dictList;
+    }
+
+    public void setDictList(List<Dict> dictList) {
+        this.dictList = dictList;
+    }
 
     public Integer getId() {
         return id;

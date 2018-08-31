@@ -162,19 +162,30 @@ var Feng = {
         });
     },
     //根据code获取字典
-    getDicByCode: function (value, id) {
+    getDicByCode: function (data, code, id) {
         //提交信息
-        var ajax = new $ax(Feng.ctxPath + "/dict/selectByDicCode", function (data) {
-            var option = '<option value="0">请选择</option>';
-            $.each(data, function (i, e) {
-                option += '<option value="' + e.num + '">' + e.name + '</option>';
-            });
-            $('#' + id).append(option);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].dicCode == code) {
+                var option = '<option value="">请选择</option>';
+                $.each(data[i].dictList, function (index, e) {
+                    option += '<option value="' + e.num + '">' + e.name + '</option>';
+                });
+                $('#' + id).append(option);
+                return;
+            }
 
+        }
+    },
+    getDicts: function () {
+        var result;
+        var ajax = new $ax(Feng.ctxPath + "/dict/selectTreeNode", function (data) {
+            result = data;
         }, function (data) {
             Feng.error("加载级别失败!" + data.responseJSON.message + "!");
+            return null;
         });
-        ajax.set("dicCode", value);
         ajax.start();
+        return result;
     }
+
 };

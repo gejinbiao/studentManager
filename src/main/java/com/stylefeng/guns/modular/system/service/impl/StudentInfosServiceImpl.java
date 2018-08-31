@@ -1,6 +1,7 @@
 package com.stylefeng.guns.modular.system.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageRowBounds;
 import com.stylefeng.guns.common.exception.BussinessException;
 import com.stylefeng.guns.common.page.PageReq;
 import com.stylefeng.guns.core.shiro.ShiroKit;
@@ -16,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 学生信息Service接口实现
@@ -72,6 +70,7 @@ public class StudentInfosServiceImpl implements StudentInfosService {
         Example example = new Example(StudentInfos.class);
         StudentInfos studentInfos = new StudentInfos();
         studentInfos.setCurrentOperator(Integer.valueOf(userId));
+        studentInfos.setFlag("1");
         Example.Criteria criteria = example.createCriteria();
         criteria.andIn("id", studentInfosList);
         int count = studentInfosDao.updateByExampleSelective(studentInfos, example);
@@ -130,6 +129,10 @@ public class StudentInfosServiceImpl implements StudentInfosService {
             for (int i = 0; i < studentInfoses.size(); i++) {
                 StudentInfos studentInfos = studentInfoses.get(i);
                 studentInfos.setOperator(userId);
+                studentInfos.setSource("1");
+                studentInfos.setFlag("0");//是否分配
+                studentInfos.setVisit("0");//是否上门
+                studentInfos.setStatus("1");//是否报名
                 list.add(studentInfoses.get(i));
                 if ((i > 0 && i % 1000 == 0) || i == studentInfoses.size() - 1) {
                     int no = studentInfosDao.insertList(list);
@@ -150,9 +153,18 @@ public class StudentInfosServiceImpl implements StudentInfosService {
      * @return
      */
     public List<StudentInfos> selectStudentsByUserId(StudentInfos studentInfos, PageReq pageReq) {
-        PageHelper.offsetPage(pageReq.getOffset(), pageReq.getLimit());
 
+
+        PageHelper.offsetPage(pageReq.getOffset(), pageReq.getLimit());
         return studentInfosDao.selectStudentsByUserId(studentInfos);
+    }
+
+    /**
+     * 每月上门每人
+     * @return
+     */
+    public List<Map<String, Object>> selectCountVisit(){
+        return studentInfosDao.selectCountVisit();
     }
 
 }

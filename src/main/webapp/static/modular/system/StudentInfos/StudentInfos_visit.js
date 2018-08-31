@@ -7,6 +7,7 @@ var StudentInfosInfoVisit = {
     total: 0,
     currentRow: 0,
     StudentInfosIfoData: {},
+    dicts : null,
     visitorValidateFields: {
         name: {
             validators: {
@@ -175,6 +176,7 @@ StudentInfosInfoVisit.editSubmit = function () {
     var ajax = new $ax(Feng.ctxPath + "/StudentInfos/updateStudentAndVisit", function (data) {
         if (data.code == 200) {
             Feng.success(data.message);
+            window.parent.StudentInfos.table.refresh();
         }else {
             Feng.error(data.message);
         }
@@ -194,15 +196,20 @@ $(function () {
     //绑定效验规则
     Feng.initValidator("studentInfosForm", StudentInfosInfoVisit.visitorValidateFields);
 
+    //加载字典列表
+    StudentInfosInfoVisit.dicts = Feng.getDicts();
 
     //加载级别
-    Feng.getDicByCode("level", "level");
+    Feng.getDicByCode(StudentInfosInfoVisit.dicts, "level", "level");
 
     //加载性别
-    Feng.getDicByCode("sex", "sex");
+    Feng.getDicByCode(StudentInfosInfoVisit.dicts, "sex", "sex");
 
     //加载是否报名
-    Feng.getDicByCode("signUp", "status");
+    Feng.getDicByCode(StudentInfosInfoVisit.dicts, "signUp", "status");
+
+    //加载是否上门
+    Feng.getDicByCode(StudentInfosInfoVisit.dicts, "yesOrNo", "visit");
 
     //加载评论列表
     StudentInfosInfoVisit.getVisitRecord();
@@ -212,6 +219,10 @@ $(function () {
     $("#level").val($("#hideLevel").val());
     //初始化下拉控件
     $("#status").val($("#hideStatus").val());
+    //初始化下拉控件
+    $("#sex").val($("#hideSex").val());
+    //初始化下拉控件
+    $("#visit").val($("#hideVisit").val());
 });
 
 StudentInfosInfoVisit.getVisitRecord = function () {

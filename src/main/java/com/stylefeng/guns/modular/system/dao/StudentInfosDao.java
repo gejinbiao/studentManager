@@ -5,6 +5,7 @@ import com.stylefeng.guns.modular.system.entity.StudentInfos;
 import tk.mybatis.mapper.common.special.InsertListMapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生信息Dao
@@ -16,9 +17,17 @@ public interface StudentInfosDao extends Mapper<StudentInfos>, InsertListMapper<
 
     /**
      * 根据userId 权限进行查询
+     *
      * @param studentInfos
      * @return
      */
     List<StudentInfos> selectStudentsByUserId(StudentInfos studentInfos);
+
+
+    /**
+     * 当月上门每人
+     * @return
+     */
+    List<Map<String, Object>> selectCountVisit();
 
 }

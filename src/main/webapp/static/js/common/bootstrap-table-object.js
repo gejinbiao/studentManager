@@ -14,7 +14,7 @@
         this.paginationType = "server";			//默认分页方式是服务器分页,可选项"client"
         this.toolbarId = bstableId + "Toolbar";
         this.columns = columns;
-        this.height = 665;						//默认表格高度665
+        this.height = null;						//默认表格高度665
         this.data = {};
         this.queryParams = {}; // 向后台传递的自定义参数
         this.showRefreshFlag = true;//是否显示刷新按钮
@@ -45,16 +45,17 @@
                     pageSize: 10,      			//每页的记录行数（*）
                     pageList: [10, 20, 50, 100],  	//可供选择的每页的行数（*）
                     queryParamsType: 'limit', 	//默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+                    height: this.height == null ? $(window).height()*0.75 : this.height,
                     queryParams: function (param) {
 
                         var queryParams = {};
                         $('#' + tableId + 'Form').find('[name]').each(function () {
                             var value = $(this).val();
-                            if (value != '') {
+                            if (value != null &&value != '') {
                                 queryParams[$(this).attr('name')] = value;
                             }
                         });
-                        console.log("自定义参数:" + queryParams)
+                        console.log("参数:" + JSON.stringify(queryParams));
                         return $.extend(queryParams, param);
                     }, // 向后台传递的自定义参数
                     sidePagination: this.paginationType,   //分页方式：client客户端分页，server服务端分页（*）
@@ -67,14 +68,12 @@
                     searchOnEnterKey: true,		//设置为 true时，按回车触发搜索方法，否则自动触发搜索方法
                     columns: this.columns,		//列数组
                     pagination: true,			//是否显示分页条
-                    height: this.height,
                     icons: {
                         refresh: 'glyphicon-repeat',
                         toggle: 'glyphicon-list-alt',
                         columns: 'glyphicon-list'
                     },
                     onLoadSuccess: function (data) {
-                        console.log(data);//这边是有数据的
                         /*layer.msg("加载成功");*/
                     },
                     onLoadError: function () { //加载失败时执行 
@@ -149,6 +148,9 @@
         },
         setShowColumnsFlag: function (data) {
             this.showColumnsFlag = data;
+        },
+        setHeight : function (data) {
+            this.height = data;
         }
     };
 

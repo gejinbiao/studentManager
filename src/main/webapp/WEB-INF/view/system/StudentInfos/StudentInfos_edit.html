@@ -5,15 +5,44 @@
             <div class="form-horizontal">
 
                 <input type="hidden" id="id" name="id" value="${studentInfos.id}">
-
+                <input type="hidden" id="hideLevel" name="hideLevel" value="${studentInfos.level}">
+                <input type="hidden" id="hideStatus" name="hideStatus" value="${studentInfos.status}">
+                <input type="hidden" id="hideSex" name="hideSex" value="${studentInfos.sex}">
+                <input type="hidden" id="hideVisit" name="hideVisit" value="${studentInfos.visit}">
+                <input type="hidden" id="hideSource" name="hideSource" value="${studentInfos.source}">
                 <div class="row">
                     <div class="col-sm-6 b-r">
                         <#input id="name" name="姓名" underline="true" value="${studentInfos.name}"/>
-                        <#input id="remark" name="备注" underline="true" value="${studentInfos.remark}"/>
+
+                        <#input id="phone" name="电话号码" underline="true" value="${studentInfos.phone}"
+                        readonly="readonly"/>
+
+                        <#input id="currentType" name="当前层次" underline="true" value="${studentInfos.currentType}"/>
+
+                        <#input id="type" name="咨询层次" underline="true" value="${studentInfos.type}"/>
+
+                        <#select id="visit" name="是否上门" underline="true" value="${studentInfos.visit}"/>
+
+
+
+
+
                     </div>
 
+                    <!--第二列-->
                     <div class="col-sm-6">
-                        <#input id="phone" name="电话号码" underline="true" value="${studentInfos.phone}"/>
+
+                        <#select id="sex" name="性别" underline="true" value="${studentInfos.sex}"/>
+
+                        <#select id="level" name="优质级别" underline="true" value="${studentInfos.level}"/>
+
+                        <#select id="status" name="是否报名" underline="true" value="${studentInfos.status}"/>
+
+                        <#select id="source" name="是否咨询量" underline="true" value="${studentInfos.source}"/>
+
+                        <#input id="remark" name="备注" underline="true" value="${studentInfos.remark}"/>
+
+
                     </div>
                 </div>
 
@@ -24,6 +53,7 @@
                     </div>
                 </div>
             </div>
+        </form>
         </div>
     </div>
 </div>

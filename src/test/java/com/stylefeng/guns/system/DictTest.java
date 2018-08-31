@@ -26,14 +26,15 @@ public class DictTest extends BaseJunit {
 
     @Test
     public void addTest() {
+        String dictCode = "test";
         String dictName = "这是一个字典测试";
         String dictValues = "1:测试1;2:测试2";
-        dictService.addDict(dictName, dictValues);
+        dictService.addDict(dictCode, dictName, dictValues);
     }
 
     @Test
     public void editTest() {
-        dictService.editDict(16, "测试", "1:测试1;2:测试2");
+        dictService.editDict(16,"test", "测试", "1:测试1;2:测试2");
     }
 
     @Test

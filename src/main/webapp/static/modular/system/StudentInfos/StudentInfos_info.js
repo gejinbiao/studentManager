@@ -5,6 +5,7 @@ var StudentInfosInfoDlg = {
     limit: 0,
     offset: 10,
     StudentInfosIfoData: {},
+    dicts: null,
     validateFields: {
         name: {
             validators: {
@@ -175,12 +176,32 @@ $(function () {
     //绑定效验规则
     Feng.initValidator("studentInfosForm", StudentInfosInfoDlg.validateFields);
 
+    //加载字典列表
+    StudentInfosInfoDlg.dicts = Feng.getDicts();
     //加载级别
-    Feng.getDicByCode("level", "level");
+    Feng.getDicByCode(StudentInfosInfoDlg.dicts, "level", "level");
 
     //加载性别
-    Feng.getDicByCode("sex", "sex");
+    Feng.getDicByCode(StudentInfosInfoDlg.dicts, "sex", "sex");
 
     //加载是否报名
-    Feng.getDicByCode("signUp", "status");
+    Feng.getDicByCode(StudentInfosInfoDlg.dicts, "signUp", "status");
+    //加载是否上门
+    Feng.getDicByCode(StudentInfosInfoDlg.dicts, "yesOrNo", "visit");
+
+    //加载是否上门
+    Feng.getDicByCode(StudentInfosInfoDlg.dicts, "yesOrNo", "source");
+
+
+
+    //初始化下拉控件
+    $("#level").val($("#hideLevel").val());
+    //初始化下拉控件
+    $("#status").val($("#hideStatus").val());
+    //初始化下拉控件
+    $("#sex").val($("#hideSex").val());
+    //初始化下拉控件
+    $("#visit").val($("#hideVisit").val());
+    //初始化下拉控件
+    $("#source").val($("#hideSource").val());
 });

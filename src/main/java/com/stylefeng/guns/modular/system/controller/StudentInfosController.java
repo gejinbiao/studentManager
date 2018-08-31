@@ -2,6 +2,7 @@ package com.stylefeng.guns.modular.system.controller;
 
 import com.github.crab2died.ExcelUtils;
 import com.stylefeng.guns.common.constant.tips.ErrorTip;
+import com.stylefeng.guns.common.constant.tips.SuccessTip;
 import com.stylefeng.guns.common.controller.BaseController;
 import com.stylefeng.guns.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.common.exception.BussinessException;
@@ -27,7 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生信息控制器
@@ -98,6 +102,9 @@ public class StudentInfosController extends BaseController {
         try {
             ShiroUser user = ShiroKit.getUser();
             bean.setCurrentOperator(user.getId());
+            if (bean.getNextVisitDateBak() != null) {
+                bean.setNextVisitDate(bean.getNextVisitDateBak());
+            }
             List<StudentInfos> studentInfos = studentInfosService.selectStudentsByUserId(bean, params);
             return packForBT(studentInfos);
         } catch (Exception e) {
@@ -116,6 +123,7 @@ public class StudentInfosController extends BaseController {
         try {
             ShiroUser user = ShiroKit.getUser();
             bean.setOperator(user.getId());
+            bean.setFlag("0");//是否分配
             int i = studentInfosService.addStudentInfos(bean);
             if (i > 0) {
                 return super.SUCCESS_TIP;
@@ -262,6 +270,31 @@ public class StudentInfosController extends BaseController {
             }
         } catch (Exception e) {
             Log4jUtil.error(e, "分量错误");
+            return ErrorTip.error();
+        }
+    }
+
+    @RequestMapping(value = "/visitCount")
+    @ResponseBody
+    public Object visitCount() {
+
+        try {
+            int[] array = null;
+            String[] nameArry = null;
+            List<Map<String, Object>> resultMap = studentInfosService.selectCountVisit();
+            array = new int[resultMap.size()];
+            nameArry = new String[resultMap.size()];
+
+            for (int i = 0; i < resultMap.size(); i++) {
+                array[i] = ((BigDecimal)resultMap.get(i).get("num")).intValue();
+                nameArry[i] = (String) resultMap.get(i).get("name");
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("nums", array);
+            map.put("names", nameArry);
+            return new SuccessTip(map);
+        } catch (Exception e) {
+            Log4jUtil.error(e, "查询上门错误");
             return ErrorTip.error();
         }
     }

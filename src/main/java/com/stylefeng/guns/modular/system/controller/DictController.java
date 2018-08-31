@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,11 +82,11 @@ public class DictController extends BaseController {
     @RequestMapping(value = "/add")
     @Permission(Const.ADMIN_NAME)
     @ResponseBody
-    public Object add(String dictName, String dictValues) {
+    public Object add(String dictCode,String dictName, String dictValues) {
         if (ToolUtil.isOneEmpty(dictName, dictValues)) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        dictService.addDict(dictName, dictValues);
+        dictService.addDict(dictCode, dictName, dictValues);
         return SUCCESS_TIP;
     }
 
@@ -105,10 +106,16 @@ public class DictController extends BaseController {
      * 获取所有字典列表
      */
     @RequestMapping(value = "/selectByDicCode")
-    @Permission(Const.ADMIN_NAME)
     @ResponseBody
     public Object selectByDicCode(String dicCode) {
         List<Dict> list = dictService.selectDicByDicCode(dicCode);
+        return list;
+    }
+
+    @RequestMapping(value = "/selectTreeNode")
+    @ResponseBody
+    public Object selectTreeNode() {
+        List<Dict> list = dictService.selectTreeNode();
         return list;
     }
 
@@ -130,11 +137,11 @@ public class DictController extends BaseController {
     @RequestMapping(value = "/update")
     @Permission(Const.ADMIN_NAME)
     @ResponseBody
-    public Object update(Integer dictId, String dictName, String dictValues) {
+    public Object update(Integer dictId,String dictCode, String dictName, String dictValues) {
         if (ToolUtil.isOneEmpty(dictId, dictName, dictValues)) {
             throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
         }
-        dictService.editDict(dictId, dictName, dictValues);
+        dictService.editDict(dictId,dictCode, dictName, dictValues);
         return super.SUCCESS_TIP;
     }
 

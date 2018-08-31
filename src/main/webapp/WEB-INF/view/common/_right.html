@@ -1,25 +1,30 @@
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
-                    class="fa fa-bars"></i> </a>
-                <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;background: url('${ctxPath}/static/img/logo.png');background-repeat:no-repeat;background-size:contain;background-color: white">
+            <div class="navbar-header" ><a class="navbar-minimalize minimalize-styl-2 " href="#" style="width: 40px;
+	height: 55px;
+	line-height: 30px;
+	text-align: center;
+	background:transparent;margin: 0px;"><!--<i
+                    class="fa fa-bars"></i> --></a>
+              <!--  <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                     <div class="form-group">
                         <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search"
                                id="top-search">
                     </div>
-                </form>
+                </form>-->
             </div>
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown hidden-xs">
-                    <a class="right-sidebar-toggle" aria-expanded="false">
+                    <!--<a class="right-sidebar-toggle" aria-expanded="false">
                         <i class="fa fa-tasks"></i> 主题
-                    </a>
+                    </a>-->
+                    <!--<strong class="font-bold">${shiro.getUser().name}</strong>-->
                 </li>
             </ul>
         </nav>
     </div>
-    <div class="row content-tabs">
+    <div class="row content-tabs" style="border-top:solid 2px #2f4050;border-bottom: 0px">
         <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
         </button>
         <nav class="page-tabs J_menuTabs">
@@ -46,7 +51,7 @@
         <a href="logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
     </div>
     <div class="row J_mainContent" id="content-main">
-        <iframe class="J_iframe" name="iframe0" width="100%"  src="${ctxPath}/blackboard" frameborder="0" data-id="${ctxPath}/blackboard" seamless></iframe>
+        <iframe class="J_iframe" name="iframe0" width="100%" height="100%"  src="${ctxPath}/blackboard" frameborder="0" data-id="${ctxPath}/blackboard" seamless></iframe>
     </div>
     <div class="footer">
         <div class="pull-right">&copy; 2016-2017 <a href="#" target="_blank">guns</a>

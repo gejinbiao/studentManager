@@ -28,8 +28,8 @@ public class BlackboardController extends BaseController {
      */
     @RequestMapping("")
     public String blackboard(Model model) {
-        List<Map<String, Object>> notices = noticeMapper.list(null);
-        model.addAttribute("noticeList",notices);
+       /* List<Map<String, Object>> notices = noticeMapper.list(null);
+        model.addAttribute("noticeList",notices);*/
         return "/blackboard.html";
     }
 }
